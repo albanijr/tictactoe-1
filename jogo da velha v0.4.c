@@ -1,11 +1,10 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
 #include <conio.h>
 
-int opcao, jogador=1, vencedor=0, turno=1, linha, coluna, casa[3][3], vitorias1=0, vitorias2=0, i, j;
-char nome1[100], nome2[100];
+int opcao, jogador=1, vencedor=0, turno=1, linha, coluna, vitorias1=0, vitorias2=0, veitoriasdavelha=0, i, j;
+char nome1[100], nome2[100], casa[4][4];
 
 //Cria um cabeçalho
 cabecalho (){
@@ -73,13 +72,13 @@ tabuleiro (){          //tabuleiro temporário
    system ("cls");
    cabecalho ();
    printf ("\t\t\t     |     |    \n  ");
-   printf ("\t\t\t  %d  |  %d  |  %d \n", casa[1][1], casa[1][2], casa[1][3]);
+   printf ("\t\t\t  %c  |  %c  |  %c \n", casa[1][1], casa[1][2], casa[1][3]);
    printf ("\t\t\t_____|_____|_____\n");
    printf ("\t\t\t     |     |        \n");
-   printf ("\t\t\t  %d  |  %d  |  %d \n", casa[2][1], casa[2][2], casa[2][3]);
+   printf ("\t\t\t  %c  |  %c  |  %c \n", casa[2][1], casa[2][2], casa[2][3]);
    printf ("\t\t\t_____|_____|_____\n");
    printf ("\t\t\t     |     |    \n");
-   printf ("\t\t\t  %d  |  %d  |  %d \n", casa[3][1], casa[3][2], casa[3][3]);
+   printf ("\t\t\t  %c  |  %c  |  %c \n", casa[3][1], casa[3][2], casa[3][3]);
    printf ("\t\t\t     |     |\n\n\n");
 }
 
@@ -116,17 +115,17 @@ jogada (){
              validajogada ();
        for (i=1; i<=3; i++){
           for (j=1;j<=3; j++){
-             verificavencedor (i, 1, i, 2, i, 3);
-             verificavencedor (1, j, 2, j, 3, j);
+             verificavencedor (i, 1, i, 2, i, 3); //verifica vencedor nas colunas
+             verificavencedor (1, j, 2, j, 3, j); //verifica vencedos nas linhas
           }
        }
-       verificavencedor (1, 1, 2, 2, 3, 3);
-       verificavencedor (1, 3, 2, 2, 3, 1); 
+       verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
+       verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
        turno++;
        tabuleiro ();
 //   }
-   printf ("Pressione qualquer tecla para voltar ao menu inicial.\n");
-   menu1 ();
+//   printf ("Pressione qualquer tecla para voltar ao menu inicial.\n");
+//   menu1 ();
 }
 
 //Obriga linha escolhida estar entre 1 e 3.
@@ -157,7 +156,7 @@ validacoluna (){
 
 //Valida uma jogada em posição livre.
 validajogada (){
-   if (casa[linha][coluna] == 1 || casa[linha][coluna] == 2){
+   if (casa[linha][coluna] == 'X' || casa[linha][coluna] == 'O'){
       system ("cls");
       cabecalho ();
       tabuleiro ();
@@ -169,41 +168,59 @@ validajogada (){
             printf ("Informe as novas coordenadas da sua jogada.\n");
             printf ("Linha: ");
             scanf ("%d", &linha);
+            validalinha ();
             printf ("Coluna: ");
             scanf ("%d", &coluna);
+            validacoluna();
             validajogada ();
    }
    else {
         if (jogador == 1){
-            casa[linha][coluna] = 1;
+            casa[linha][coluna] = 'X';
             jogador = 2;
         }
         else {
-           casa[linha][coluna] = 2;
+           casa[linha][coluna] = 'O';
            jogador = 1;
         }
    }
 }
 
+/*
+alternajogador (){
+   if (jogador == 1){
+      casa[linha][coluna] = 1;
+      jogador = 2;
+   }
+   else {
+      casa[linha][coluna] = 2;
+      jogador = 1;
+   }
+}
+*/
+
 //Verifica se houve vencedor ou se deu velha.
 verificavencedor(a, b, c, d, e, f){
-   if (casa[a][b] == 1 && casa[c][d] == 1 && casa[e][f] == 1){
+   if (casa[a][b] == 'X' && casa[c][d] == 'X' && casa[e][f] == 'X'){
       jogador = 1;
       vencedor =1;
       ++vitorias1;
       printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
       placar ();
+      jogador = 2;
    }
-   if (casa[a][b] == 2 && casa[c][d] == 2 && casa[e][f] == 2){
+   if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
       jogador = 2;
       vencedor = 1;
       ++vitorias2;
-      printf ("Parabéns!\n%s, você foi o(a) vencedor(a)!", nome1);
+      printf ("Parabéns!\n%s, você foi o(a) vencedor(a)!", nome2);
       placar ();
    }
-   if (turno >= 9) {
+   if (turno > 10) {
       printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
       system ("pause");
+      ++vitoriasdavelha;
+      placar ();
    }
 }
 
@@ -216,7 +233,12 @@ placar (){
    printf ("___________________________________________________________________\n\n");
    printf ("%s venceu %d vezes.\n", nome1, vitorias1);
    printf ("%s venceu %d vezes.\n", nome2, vitorias2);
+   printf ("A velha ganhou %d vezes.\n", vitoriasdavelha);
    system ("pause");
+   for (i=0; i<=4; i++)             //Essse loops ZERA novamente as casas, fazendo com que seja possível reiniciar o jogo sem um vencedor.
+      for (j=0;j<=4; j++)
+         casa[i][j] = '\0';
+   turno=0;
 }
 
 /*
@@ -229,12 +251,9 @@ main (){
    int coordenada=0;
    setlocale (LC_ALL, "Portuguese");
    system ("color 07");
-
-   while (vencedor == 0 || turno < 10){
-      menu1 ();
+   
+   menu1 ();
+   while (vencedor == 0 || turno < 10)
       jogada ();
-   }
-   for (i=0; i<=4; i++)
-      for (j=0;j<=4; j++)
-         casa[i][j] = 0; 
+
 }
