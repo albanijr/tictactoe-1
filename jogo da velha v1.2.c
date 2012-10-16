@@ -6,7 +6,7 @@ Checagem de posição marcada OK;
 Verificação de vencedor OK;
 Contagem de vítórias OK;
 Reiniciar novo jogo com jogadores diferentes OK;
-Finalizar programa ERRO OK.
+Finalizar programa OK.
 
 ERROS:
 Reiniciar novo jogo com os mesmos jogadores - Some o nome do jogador 2).
