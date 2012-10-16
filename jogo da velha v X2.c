@@ -17,7 +17,8 @@ Finalizar programa ERRO - não finaliza.
 #include <locale.h>
 #include <conio.h>
 
-int opcao, 
+int opcao,
+    opcao2,
     jogador=1, 
     vencedor=0, 
     turno=0, 
@@ -35,8 +36,8 @@ char nome1[100],
 
 //Cria um cabeçalho
 cabecalho (){
-   printf ("___________________________________________________________________\n\n\n");
-   printf ("|\t\t\tJOGO DA VELHA                             |\n\n");
+   printf ("___________________________________________________________________\n\n");
+   printf ("|\t\t\tJOGO DA VELHA                             |\n");
    printf ("___________________________________________________________________\n\n");
 }
 
@@ -45,14 +46,17 @@ menu1 (){
    system ("cls");
    cabecalho();
    printf ("OPÇÕES\n\n");
-   printf ("1 - Novo jogo. \n2 - Instruções. \n3 - Sair. \n\n");
+   printf ("1 - Novo jogo. \n2 - Instruções.\n3 - Sair.\n\n");
    printf ("--->  ");
    scanf ("%d", &opcao);
    validaopcao ();
    switch (opcao){
       case 1:
-         tabuleiro ();
+         cabecalho();
+         tabuleiro();
          informa ();
+         while (vencedor == 0 && turno < 9)
+            jogada ();
       break;
       case 2:
          system ("cls");
@@ -60,34 +64,30 @@ menu1 (){
          printf ("\t\t\tINSTRUÇÕES\n\n");
          printf ("1 - Informe os nomes dos jogadores. \n2 - As jogadas são alternadas. \n3 - Ganha o jogador que marcar três posições em sequencia.\n");
          getch ();
-         menu1();         
+         menu1();
       break;
       case 3:
-         printf ("Obrigado por ter jogado velha's gaming :)\n");
-         system ("pause");
-      break;      
-      //default:
-        // menu1();
-      //break;
+         exit (EXIT_SUCCESS);       
+      break;
    }
 }
 
 //Informando os nomes dos jogadores
 informa (){    
    printf ("Informe o nome do 1º jogador: ");
-   //fflush (stdin);
-   //fgets (nome1, 99, stdin);
-   gets (nome1);
+   fflush (stdin);
+   fgets (nome1, 99, stdin);
+   //gets (nome1);
    printf ("Informe o nome do 2º jogador: ");
-   //fflush (stdin);
-   //fgets (nome2, 99, stdin);
-   gets (nome2);
+   fflush (stdin);
+   fgets (nome2, 99, stdin);
+   //gets (nome2);
    system ("cls");
    cabecalho ();
    tabuleiro ();
    printf ("\n");
-   printf ("%s joga com X.\n%s joga com O.\n", nome1, nome2);
-   getch ();
+   printf ("%s joga com X.\n%s joga com O.\n\n", nome1, nome2);
+   system ("pause");
 }
 
 tabuleiro (){          //tabuleiro temporário
@@ -118,11 +118,12 @@ validaopcao (){
 
 //Marcação das posções escolhidas, ora pelo jogador 1, ora pelo jogador 2.
 jogada (){
-//   while (vencedor == 0 || turno < 10){
        turno++;
        system ("cls");
        cabecalho ();
        tabuleiro ();
+       while (vencedor == 0 && turno < 9)
+          jogada();
        printf ("\n\nEssa é a %d rodada.\n\n", turno);
           if (jogador == 1)
              printf ("%s, informe as coordenadas da sua jogada.\n", nome1);
@@ -136,7 +137,6 @@ jogada (){
              scanf ("%d", &coluna);
              validacoluna ();
              validajogada ();
-//   }
 }
 
 //Obriga linha escolhida estar entre 1 e 3.
@@ -195,56 +195,60 @@ validajogada (){
            jogador = 1;
         }
    }
+   for (i=1; i<=3; i++)
+      verificavencedor (i, 1, i, 2, i, 3);     //verifica vencedor nas colunas
+   for (j=1;j<=3; j++)
+      verificavencedor (1, j, 2, j, 3, j);    //verifica vencedos nas linhas
+   verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
+   verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
 }
 
 //Verifica se houve vencedor ou se deu velha.
 verificavencedor(a, b, c, d, e, f){
    if (casa[a][b] == 'X' && casa[c][d] == 'X' && casa[e][f] == 'X'){
       jogador = 1;
-      vencedor =1;
-      ++vitorias1;
-      system ("cls");
-      cabecalho ();
-      tabuleiro ();
-      printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
-      //placar ();
-   }
-   if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
-      jogador = 2;
       vencedor = 1;
-      ++vitorias2;
       system ("cls");
       cabecalho ();
       tabuleiro ();
       printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
-      //placar ();
    }
-   if (turno >= 9) {
-      ++vitoriasdavelha;
-      system ("cls");
-      cabecalho ();
-      tabuleiro ();
-      printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
-      placar ();
-      //system ("pause");
-      
+   else {
+        if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
+            jogador = 2;
+            vencedor = 1;
+            system ("cls");
+            cabecalho ();
+            tabuleiro ();
+            printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
+         }
+         else {
+            if (turno >= 9) {
+               system ("cls");
+               cabecalho ();
+               tabuleiro ();
+               printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
+            }
+         }
    }
 }
 
 placar (){
+   if (jogador == 1 && vencedor == 1)
+      ++vitorias1;
+   if (jogador == 2 && vencedor == 1)
+      ++vitorias2;
+   if (turno >= 9)
+      ++vitoriasdavelha;
    system ("cls");
    cabecalho ();
    tabuleiro ();   
-   printf ("___________________________________________________________________\n\n\n");
-   printf ("|\t\t\t\tPLACAR                             |\n\n");
    printf ("___________________________________________________________________\n\n");
-   printf ("%s venceu %d vezes.\n", nome1, vitorias1);
-   printf ("%s venceu %d vezes.\n", nome2, vitorias2);
+   printf ("|\t\t\t\tPLACAR                             |\n");
+   printf ("___________________________________________________________________\n\n");
+   printf ("%s venceu %d vezes\n", nome1, vitorias1);
+   printf ("%s venceu %d vezes\n", nome2, vitorias2);
    printf ("A velha ganhou %d vezes.\n", vitoriasdavelha);
-   system ("pause");
-   for (i=0; i<=4; i++)             //Essse loops ZERA novamente as casas, fazendo com que seja possível reiniciar o jogo sem um vencedor.
-      for (j=0;j<=4; j++)
-         casa[i][j] = '\0';
    turno=0;
    //menu2();
 }
@@ -257,29 +261,14 @@ menu2(){
    printf ("2 - Jogar com jogadores diferentes.\n");
    printf ("3 - Sair.\n\n");
    printf ("--->  ");
-   scanf ("%d", &opcao);
-   validaopcao();
-   switch (opcao){
-      case 1:
+   scanf ("%d", &opcao2);
+   validaopcao2();
+   switch (opcao2){
+      case 1:                                       //Para jogar com os mesmos jogadores.
          printf ("Você escolheu 1.\n");
-         /*
          vencedor = 0;
-         //vitorias1=0;
-         //vitorias2=0;
-         //vitoriasdavelha=0;
-         printf ("Vitorias 1 %d\n", vitorias1);
-         printf ("Vitorias 2 %d\n", vitorias2);
-         printf ("Vitorias Velha %d\n", vitoriasdavelha);
-         printf ("Nome 1 %s\n", nome1);
-         printf ("Nome 2 %s\n", nome2);                  //ERRO Nome2 está sumindo.
-         system ("pause");
-         */
-         jogada ();
-      break;
-      case 2:
-/*
-         vencedor = 0;
-         vitorias1=0;
+         turno = 0;
+         /*vitorias1=0;
          vitorias2=0;
          vitoriasdavelha=0;
          printf ("Vitorias 1 %d\n", vitorias1);
@@ -288,12 +277,41 @@ menu2(){
          printf ("Nome 1 %s\n", nome1);
          printf ("Nome 2 %s\n", nome2);                  //ERRO Nome2 está sumindo.
          system ("pause");
-*/
+         jogada ();
+         */
+      break;
+      case 2:                                       //Para jogar com jogadores diferentes
+         vencedor = 0;
+         turno = 0;
+         vitorias1=0;
+         vitorias2=0;
+         vitoriasdavelha=0;
+         system ("cls");
+         main ();
+         /*
+         printf ("Vitorias 1 %d\n", vitorias1);
+         printf ("Vitorias 2 %d\n", vitorias2);
+         printf ("Vitorias Velha %d\n", vitoriasdavelha);
+         printf ("Nome 1 %s\n", nome1);
+         printf ("Nome 2 %s\n", nome2);                  //ERRO Nome2 está sumindo.
+         system ("pause");
          menu1();
+         */
       break;
       case 3:
-         vencedor = 1;                 
+         exit (EXIT_SUCCESS);                 
       break;
+   }
+}
+
+validaopcao2 (){
+   while (opcao2 < 1 || opcao2 > 3){
+      system ("cls");
+      cabecalho ();
+      printf ("\n\n%d não é uma opção válida.\n", opcao);
+      printf ("Por favor, escolha 1, para jogar, 2 para informações ou 3 para sair.\n\n");
+      printf ("--->   ");
+      scanf ("%d", &opcao2);
    }
 }
 
@@ -306,24 +324,24 @@ menu2(){
 main (){
    setlocale (LC_ALL, "Portuguese");
    system ("color 07");
-   
-   //menu1 ();
-   cabecalho();
-   informa ();
+   for (i=0; i<=4; i++)             //Essse loops ZERA novamente as casas, fazendo com que seja possível reiniciar o jogo sem um vencedor.
+      for (j=0;j<=4; j++)
+         casa[i][j] = '\0';   
+   menu1();
    do {
-      jogada ();
-       for (i=1; i<=3; i++){
-          for (j=1;j<=3; j++){
-             verificavencedor (i, 1, i, 2, i, 3); //verifica vencedor nas colunas
-             verificavencedor (1, j, 2, j, 3, j); //verifica vencedos nas linhas
-          }
-       }
-       verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
-       verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
-   } while (vencedor == 0 || turno < 10);
-
-   placar ();   
-
-   menu2();
-
+/*
+      while (vencedor == 0 && turno < 9) {
+         jogada ();
+            for (i=1; i<=3; i++)
+               verificavencedor (i, 1, i, 2, i, 3);     //verifica vencedor nas colunas
+            for (j=1;j<=3; j++)
+                verificavencedor (1, j, 2, j, 3, j);    //verifica vencedos nas linhas
+             verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
+             verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
+      }
+*/
+      placar (); 
+      system ("pause"); 
+      menu2();
+   } while (opcao2 == 1);
 }
