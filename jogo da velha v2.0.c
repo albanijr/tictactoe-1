@@ -18,7 +18,6 @@ Reiniciar novo jogo com os mesmos jogadores OK.
 #include <conio.h>
 
 int opcao,
-    opcao2,
     jogador=1, 
     vencedor=0, 
     turno=0,
@@ -264,9 +263,9 @@ menu2(){
    printf ("2 - Jogar com jogadores diferentes.\n");
    printf ("3 - Sair.\n\n");
    printf ("--->  ");
-   scanf ("%d", &opcao2);
-   validaopcao2();
-   switch (opcao2){
+   scanf ("%d", &opcao);
+   validaopcao();
+   switch (opcao){
       /*
         Para jogar com os mesmos jogadores, os nomes informados no incício são transmitidos para
         variáveis auxiliares, nomeaux recebe 1, vencedor recebe e turno recebem 0 e as casas são
@@ -303,17 +302,6 @@ menu2(){
    }
 }
 
-validaopcao2 (){
-   while (opcao2 < 1 || opcao2 > 3){
-      system ("cls");
-      cabecalho ();
-      printf ("\n\n%d não é uma opção válida.\n", opcao);
-      printf ("Por favor, escolha 1, para jogar, 2 para informações ou 3 para sair.\n\n");
-      printf ("--->   ");
-      scanf ("%d", &opcao2);
-   }
-}
-
 /*
 ============================================================================
                       PROGRAMA PRINCIPAL
@@ -328,6 +316,8 @@ main (){
       for (j=0;j<=4; j++)
          casa[i][j] = '\0';
    menu1();
+   opcao=0;
+
    //O loop seguinte repete o jogo enquanto se iniciarem novos jogos com os mesmos jogadores. 
    do {
       //A estrutura de decisão abaixo só é invocada após o jogo ter rodado ao menos 1 vez. e
@@ -350,11 +340,11 @@ main (){
                 verificavencedor (1, j, 2, j, 3, j);    //verifica vencedos nas linhas
              verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
              verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
-      } //fecha o while da linha 342.
+      } //fecha o while da linha 332.
       
       placar ();
 
       system ("pause");  
       menu2();
-   } while (opcao2 == 1); //estabelece a condição do DO iniciado na linha 332.
+   } while (opcao == 1); //estabelece a condição do DO iniciado na linha 322.
 }  //encerra a função main ().
