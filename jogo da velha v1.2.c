@@ -76,10 +76,28 @@ informa (){
    printf ("Informe o nome do 1º jogador: ");
    fflush (stdin);
    fgets (nome1, 99, stdin);
+   /*
+     esse laço percorre a string capturada pelo fgets procurando 
+     a posição marcada com \n, caso entre, essa posição recebe \o.
+   */
+   for (i=0; i<=strlen(nome1); i++){
+      if (nome1[i] == '\n')
+         nome1[i] = '\0';
+   }
+
    //gets (nome1);
    printf ("Informe o nome do 2º jogador: ");
    fflush (stdin);
    fgets (nome2, 99, stdin);
+   /*
+     esse laço percorre a string capturada pelo fgets procurando 
+     a posição marcada com \n, caso entre, essa posição recebe \o.
+   */
+   for (i=0; i<=strlen(nome2); i++){
+      if (nome2[i] == '\n')
+         nome2[i] = '\0';
+   }
+
    //gets (nome2);
    system ("cls");
    cabecalho ();
@@ -237,9 +255,9 @@ placar (){
    printf ("___________________________________________________________________\n\n");
    printf ("|\t\t\t\tPLACAR                             |\n");
    printf ("___________________________________________________________________\n\n");
-   printf ("%s venceu %d vezes\n", nome1, vitorias1);
-   printf ("%s venceu %d vezes\n", nome2, vitorias2);
-   printf ("A velha ganhou %d vezes.\n", vitoriasdavelha);
+   printf ("%s venceu %d vezes\n\n", nome1, vitorias1);
+   printf ("%s venceu %d vezes\n\n", nome2, vitorias2);
+   printf ("A velha ganhou %d vezes.\n\n\n", vitoriasdavelha);
    turno=0;
 }
 
@@ -308,7 +326,8 @@ main (){
              verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
              verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
       }
-      placar (); 
+      placar ();
+
       system ("pause");  
       menu2();
    for (i=0; i<=4; i++)             //Essse loops ZERA novamente as casas, fazendo com que seja possível reiniciar o jogo sem um vencedor.
