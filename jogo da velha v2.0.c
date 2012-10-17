@@ -1,14 +1,15 @@
 /*
-Checagem de opcao OK,
-Checagem de linha OK,
-Checagem de coluna OK;
-Checagem de posição marcada OK;
+Entrada dos nomes OK,
+Entrada das coordenada OK,
+Checagem de opcao menu1 e menu2 OK,
+Checagem de coordenadas (linha e coluna) OK,
+Checagem de jogada (posição livre ou marcada) OK;
+Alernação de jogadores entre os turnos OK;
 Verificação de vencedor OK;
 Contagem de vítórias OK;
+Reiniciar novo jogo com os mesmos jogadores OK;
 Reiniciar novo jogo com jogadores diferentes OK;
 Finalizar programa OK.
-Reiniciar novo jogo com os mesmos jogadores OK.
-
 :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)
 */
 
@@ -65,7 +66,7 @@ menu1 (){
       case 2:
          system ("cls");
          cabecalho();
-         printf ("\t\t\tINSTRUÇÕES\n\n");
+         printf ("\t\t\t         INSTRUÇÕES\n\n");
          printf ("1 - Informe os nomes dos jogadores. \n2 - As jogadas são alternadas. \n3 - Ganha o jogador que marcar três posições em sequencia.\n");
          getch ();
          menu1();
@@ -82,7 +83,7 @@ informa (){
    fflush (stdin);
    fgets (nome1, 99, stdin);
    /* esse laço percorre a string capturada pelo fgets procurando 
-     a posição marcada com \n, caso entre, essa posição recebe \0 */
+     a posição marcada com \n, quando a encontra, essa posição recebe \0 */
    for (i=0; i<=strlen(nome1); i++){
       if (nome1[i] == '\n')
          nome1[i] = '\0';
@@ -91,7 +92,7 @@ informa (){
    fflush (stdin);
    fgets (nome2, 99, stdin);
    /* esse laço percorre a string capturada pelo fgets procurando 
-     a posição marcada com \n, caso entre, essa posição recebe \0 */
+     a posição marcada com \n, quando a encontra, essa posição recebe \0 */
    for (i=0; i<=strlen(nome2); i++){
       if (nome2[i] == '\n')
          nome2[i] = '\0';
@@ -212,7 +213,7 @@ validajogada (){
 
 //Essa função recebe parâmetros de 1 até 3, que dizem respeto às coordenadas maracadas pelos
 //jogadores, verifica e informa se houve vencedor ou se houve empate.
-verificavencedor(a, b, c, d, e, f){
+verificavencedor(int a, int b, int c, int d, int e, int f){
    if (casa[a][b] == 'X' && casa[c][d] == 'X' && casa[e][f] == 'X'){
       jogador = 1;
       vencedor = 1;
@@ -250,9 +251,9 @@ placar (){
    printf ("___________________________________________________________________________\n\n");
    printf ("|\t\t\t\t   PLACAR                                 |\n");
    printf ("___________________________________________________________________________\n\n");
-   printf ("%s venceu %d vezes\n\n", nome1, vitorias1);
-   printf ("%s venceu %d vezes\n\n", nome2, vitorias2);
-   printf ("A velha ganhou %d vezes.\n\n\n", vitoriasdavelha);
+   printf ("%s venceu %d vez(es)\n\n", nome1, vitorias1);
+   printf ("%s venceu %d vez(es)\n\n", nome2, vitorias2);
+   printf ("A velha ganhou %d vez(es).\n\n\n", vitoriasdavelha);
 }
 
 menu2(){
@@ -266,10 +267,10 @@ menu2(){
    scanf ("%d", &opcao);
    validaopcao();
    switch (opcao){
+      
       /*
         Para jogar com os mesmos jogadores, os nomes informados no incício são transmitidos para
-        variáveis auxiliares, nomeaux recebe 1, vencedor recebe e turno recebem 0 e as casas são
-        zeradas.
+        variáveis auxiliares, ativa-se nomeaux, vencedor e turno recebem 0 e as casas são zeradas.
       */
       case 1:
          strcpy (nomeaux1,nome1);
@@ -283,8 +284,8 @@ menu2(){
                casa[i][j] = '\0'; 
       break;
       /*
-         Para jogar com jogadores diferentes, zera a quantidade de vitórias, anula o vencedor, o
-         turno e a variável nomeaux e volta à função main.
+         Para jogar com jogadores diferentes, zera-se a quantidade de vitórias, anulam-se vencedor,
+         turno e variável nomeaux e invoca-se a função main desde o seu início.
       */         
       case 2:
          vitorias1=0;
@@ -311,6 +312,7 @@ menu2(){
 main (){
    setlocale (LC_ALL, "Portuguese");
    system ("color 07");
+
    //Essse loop "ZERA" as casas do tabuleiro para qualquer novo jogo.
    for (i=0; i<=4; i++)            
       for (j=0;j<=4; j++)
@@ -320,8 +322,8 @@ main (){
 
    //O loop seguinte repete o jogo enquanto se iniciarem novos jogos com os mesmos jogadores. 
    do {
-      //A estrutura de decisão abaixo só é invocada após o jogo ter rodado ao menos 1 vez. e
-      //informa novamente ao programa os nomes dos jogadores 1 e 2.
+      //A função da estrutura de decisão abaixo é informa novamente ao programa os nomes dos 
+      //jogadores 1 e 2. O programa só passará por ela, em caso de novo jogo com jogadores iguais aos da partida anterior.
       if (nomeaux == 1){
          strcpy (nome1, nomeaux1);
          strcpy (nome2, nomeaux2);
@@ -340,11 +342,13 @@ main (){
                 verificavencedor (1, j, 2, j, 3, j);    //verifica vencedos nas linhas
              verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
              verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
-      } //fecha o while da linha 332.
+      } //fecha o while da linha 334.
       
       placar ();
 
       system ("pause");  
+
       menu2();
-   } while (opcao == 1); //estabelece a condição do DO iniciado na linha 322.
+
+   } while (opcao == 1); //estabelece a condição do DO iniciado na linha 324.
 }  //encerra a função main ().
