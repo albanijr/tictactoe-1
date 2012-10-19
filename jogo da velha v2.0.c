@@ -111,6 +111,20 @@ informa (){
 tabuleiro (){          //tabuleiro temporário
    system ("cls");
    cabecalho ();
+   printf ("\t\t\t           #     #    \n  ");
+   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[1][1], casa[1][2], casa[1][3]);
+   printf ("\t\t\t           #     #    \n  ");
+   printf ("\t\t\t      #################\n");
+   printf ("\t\t\t           #     #        \n");
+   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[2][1], casa[2][2], casa[2][3]);
+   printf ("\t\t\t           #     #    \n  ");
+   printf ("\t\t\t      #################\n");
+   printf ("\t\t\t           #     #    \n");
+   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[3][1], casa[3][2], casa[3][3]);
+   printf ("\t\t\t           #     #\n\n\n");
+
+/*   system ("cls");
+   cabecalho ();
    printf ("\t\t\t           |     |    \n  ");
    printf ("\t\t\t        %c  |  %c  |  %c \n", casa[1][1], casa[1][2], casa[1][3]);
    printf ("\t\t\t      _____|_____|_____\n");
@@ -120,6 +134,7 @@ tabuleiro (){          //tabuleiro temporário
    printf ("\t\t\t           |     |    \n");
    printf ("\t\t\t        %c  |  %c  |  %c \n", casa[3][1], casa[3][2], casa[3][3]);
    printf ("\t\t\t           |     |\n\n\n");
+*/
 }
 
 //Valida entrada do menu inicial, impedindo que a opção do usuário seja menor que 1 ou maior que 3. 
@@ -140,6 +155,7 @@ jogada (){
        printf ("\n\nEssa é a %d rodada.\n\n", turno);
           if (jogador == 1)
              printf ("%s, informe as coordenadas da sua jogada.\n", nome1);
+
           else
              printf ("%s, informe as coordenadas da sua jogada.\n", nome2);
     
@@ -217,20 +233,13 @@ verificavencedor(int a, int b, int c, int d, int e, int f){
    if (casa[a][b] == 'X' && casa[c][d] == 'X' && casa[e][f] == 'X'){
       jogador = 1;
       vencedor = 1;
-      printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
-   }
-   else {
-        if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
-            jogador = 2;
-            vencedor = 1;
-            printf ("Parabéns! %s, você foi o vencedor\n\n!", nome1);
-         }
-         else {
-            if (vencedor == 0 && turno >= 9) {
-               vencedor = 0;
-               printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
-            }
-         }
+      printf ("\t\t\tParabéns! \t\t%s, você foi o vencedor!\n\n", nome1);
+   } else {
+      if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
+         jogador = 2;
+         vencedor = 1;
+         printf ("\t\t\tParabéns! \t\t%s, você foi o vencedor!\n\n", nome2);
+      }
    }
 }
 
@@ -243,11 +252,6 @@ placar (){
       ++vitorias1;
    if (jogador == 2 && vencedor == 1)
       ++vitorias2;
-   if (vencedor == 0 && turno >= 9)
-      ++vitoriasdavelha;
-   system ("cls");
-   cabecalho ();
-   tabuleiro ();   
    printf ("___________________________________________________________________________\n\n");
    printf ("|\t\t\t\t   PLACAR                                 |\n");
    printf ("___________________________________________________________________________\n\n");
@@ -335,14 +339,20 @@ main (){
          jogada ();
          system ("cls");
          cabecalho ();
-         tabuleiro ();  
-            for (i=1; i<=3; i++)
+         tabuleiro ();
+            for (i=1; i<=3; i++){
                verificavencedor (i, 1, i, 2, i, 3);     //verifica vencedor nas colunas
-            for (j=1;j<=3; j++)
-                verificavencedor (1, j, 2, j, 3, j);    //verifica vencedos nas linhas
-             verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
-             verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
+               verificavencedor (1, i, 2, i, 3, i);    //verifica vencedos nas linhas
+            }
+            verificavencedor (1, 1, 2, 2, 3, 3);       //verifica vencedor na primeira diagona
+            verificavencedor (1, 3, 2, 2, 3, 1);       //verifica vencedor na segunda diagonal
       } //fecha o while da linha 334.
+
+      if (vencedor == 0 && turno >= 9) {
+         ++vitoriasdavelha;
+         vencedor = 2;
+         printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
+      }
       
       placar ();
 
