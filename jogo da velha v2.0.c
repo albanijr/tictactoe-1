@@ -1,18 +1,3 @@
-/*
-Entrada dos nomes OK,
-Entrada das coordenada OK,
-Checagem de opcao menu1 e menu2 OK,
-Checagem de coordenadas (linha e coluna) OK,
-Checagem de jogada (posição livre ou marcada) OK;
-Alernação de jogadores entre os turnos OK;
-Verificação de vencedor OK;
-Contagem de vítórias OK;
-Reiniciar novo jogo com os mesmos jogadores OK;
-Reiniciar novo jogo com jogadores diferentes OK;
-Finalizar programa OK.
-:) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -45,7 +30,7 @@ char nome1[100],
 cabecalho (){
    printf ("___________________________________________________________________________\n\n");
    printf ("|\t\t\t\tJOGO DA VELHA                             |\n");
-   printf ("___________________________________________________________________________\n\n");
+   printf ("___________________________________________________________________________\n\n\n");
 }
 
 //Cria o menu inicial
@@ -111,17 +96,17 @@ informa (){
 tabuleiro (){          //tabuleiro temporário
    system ("cls");
    cabecalho ();
-   printf ("\t\t\t           #     #    \n  ");
-   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[1][1], casa[1][2], casa[1][3]);
-   printf ("\t\t\t           #     #    \n  ");
-   printf ("\t\t\t      #################\n");
-   printf ("\t\t\t           #     #        \n");
-   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[2][1], casa[2][2], casa[2][3]);
-   printf ("\t\t\t           #     #    \n  ");
-   printf ("\t\t\t      #################\n");
-   printf ("\t\t\t           #     #    \n");
-   printf ("\t\t\t        %c  #  %c  #  %c \n", casa[3][1], casa[3][2], casa[3][3]);
-   printf ("\t\t\t           #     #\n\n\n");
+   printf ("\t\t\t          #     #    \n  ");
+   printf ("\t\t\t       %c  #  %c  #  %c \n", casa[1][1], casa[1][2], casa[1][3]);
+   printf ("\t\t\t          #     #    \n  ");
+   printf ("\t\t\t     #################\n");
+   printf ("\t\t\t          #     #        \n");
+   printf ("\t\t\t       %c  #  %c  #  %c \n", casa[2][1], casa[2][2], casa[2][3]);
+   printf ("\t\t\t          #     #    \n  ");
+   printf ("\t\t\t     #################\n");
+   printf ("\t\t\t          #     #    \n");
+   printf ("\t\t\t       %c  #  %c  #  %c \n", casa[3][1], casa[3][2], casa[3][3]);
+   printf ("\t\t\t          #     #\n\n\n");
 
 /*   system ("cls");
    cabecalho ();
@@ -151,21 +136,20 @@ validaopcao (){
 
 //Função que orienta seleção das casas marcadas e vai orientar as jogadas.
 jogada (){
-       turno++;
-       printf ("\n\nEssa é a %d rodada.\n\n", turno);
-          if (jogador == 1)
-             printf ("%s, informe as coordenadas da sua jogada.\n", nome1);
-
-          else
-             printf ("%s, informe as coordenadas da sua jogada.\n", nome2);
+   turno++;
+   printf ("\n\nEssa é a %d rodada.\n\n", turno);
+      if (jogador == 1)
+         printf ("%s, informe as coordenadas da sua jogada.\n", nome1);
+      else
+         printf ("%s, informe as coordenadas da sua jogada.\n", nome2);
     
-             printf ("Linha: ");
-             scanf ("%d", &linha);
-             validalinha ();
-             printf ("Coluna: ");
-             scanf ("%d", &coluna);
-             validacoluna ();
-             validajogada ();
+      printf ("Linha: ");
+      scanf ("%d", &linha);
+      validalinha ();
+      printf ("Coluna: ");
+      scanf ("%d", &coluna);
+      validacoluna ();
+      validajogada ();
 }
 
 //Obriga linha escolhida estar entre 1 e 3.
@@ -233,12 +217,23 @@ verificavencedor(int a, int b, int c, int d, int e, int f){
    if (casa[a][b] == 'X' && casa[c][d] == 'X' && casa[e][f] == 'X'){
       jogador = 1;
       vencedor = 1;
-      printf ("\t\t\tParabéns! \t\t%s, você foi o vencedor!\n\n", nome1);
+      system ("cls");
+      cabecalho ();
+      trofeu ();
+      printf ("___________________________________________________________________________\n\n");
+      printf ("\t\t\t\t  Parabéns!\n\t\t\t%s, você foi o(a) vencedor(a)!\n", nome1);
+      printf ("___________________________________________________________________________\n\n");
    } else {
       if (casa[a][b] == 'O' && casa[c][d] == 'O' && casa[e][f] == 'O'){
          jogador = 2;
          vencedor = 1;
-         printf ("\t\t\tParabéns! \t\t%s, você foi o vencedor!\n\n", nome2);
+         vencedor = 1;
+         system ("cls");
+         cabecalho ();
+         trofeu ();
+         printf ("___________________________________________________________________________\n\n");
+         printf ("\t\t\t\t  Parabéns!\n\t\t\t%s, você foi o(a) vencedor(a)!\n", nome2);
+         printf ("___________________________________________________________________________\n\n");
       }
    }
 }
@@ -252,7 +247,10 @@ placar (){
       ++vitorias1;
    if (jogador == 2 && vencedor == 1)
       ++vitorias2;
-   printf ("___________________________________________________________________________\n\n");
+   system ("cls");
+   cabecalho();
+//   tabuleiro ();
+//   printf ("___________________________________________________________________________\n\n");
    printf ("|\t\t\t\t   PLACAR                                 |\n");
    printf ("___________________________________________________________________________\n\n");
    printf ("%s venceu %d vez(es)\n\n", nome1, vitorias1);
@@ -307,6 +305,21 @@ menu2(){
    }
 }
 
+trofeu (){
+     printf ("\n\t\t          #     #          ##################\n");
+     printf ("\t\t       %c  #  %c  #  %c        ################\n", casa[1][1], casa[1][2], casa[1][3]);
+     printf ("\t\t          #     #            ##############\n");
+     printf ("\t\t     #################        ############\n");
+     printf ("\t\t          #     #              ##########\n");
+     printf ("\t\t       %c  #  %c  #  %c             ######\n", casa[2][1], casa[2][2], casa[2][3]);
+     printf ("\t\t          #     #                 ####\n");
+     printf ("\t\t     #################            ####\n");
+     printf ("\t\t          #     #                 ####\n");
+     printf ("\t\t       %c  #  %c  #  %c              ####\n", casa[3][1], casa[3][2], casa[3][3]);
+     printf ("\t\t          #     #             ############\n\n\n");
+}
+
+
 /*
 ============================================================================
                       PROGRAMA PRINCIPAL
@@ -321,12 +334,13 @@ main (){
    for (i=0; i<=4; i++)            
       for (j=0;j<=4; j++)
          casa[i][j] = '\0';
+
    menu1();
    opcao=0;
 
    //O loop seguinte repete o jogo enquanto se iniciarem novos jogos com os mesmos jogadores. 
    do {
-      //A função da estrutura de decisão abaixo é informa novamente ao programa os nomes dos 
+      //A função da estrutura de decisão abaixo é informar novamente ao programa os nomes dos 
       //jogadores 1 e 2. O programa só passará por ela, em caso de novo jogo com jogadores iguais aos da partida anterior.
       if (nomeaux == 1){
          strcpy (nome1, nomeaux1);
@@ -350,14 +364,13 @@ main (){
 
       if (vencedor == 0 && turno >= 9) {
          ++vitoriasdavelha;
-         vencedor = 2;
-         printf ("Xiiiii, deu velha!\nEssa foi a %dª rodada, então acabou.\n\n", turno);
+         vencedor = 0;
+         printf ("Xiiiii, deu velha!\n");
       }
-      
+
+      system ("pause");      
       placar ();
-
-      system ("pause");  
-
+      system ("pause");
       menu2();
 
    } while (opcao == 1); //estabelece a condição do DO iniciado na linha 324.
