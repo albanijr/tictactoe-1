@@ -42,32 +42,27 @@ menu1 (){
     cabecalho();
 	printf ("OPÇÕES\n\n");
 	printf ("1 - Novo jogo. \n2 - Instruções.\n3 - Sair.\n\n");
-	printf ("--->  ");
-	
+	printf ("--->  ");	
     /*Valor do Scanf é uma variavel do tipo inteiro, ela receberá um valor gerado pela função scanf()
     esta que por sua vez retorna um valor inteiro, 1 se a entrada de dados for validada e 0 se não for validada,
     o loop se encarrega de  forçar a tela ate que o usuario informe um valor inteiro e a função fflush(stdin) se encarrega
     de limpar a entrada de dados, para que não caia em um loop infinito*/
     valorDoScanf = 0;
-    mensagemDeErro = 0;
-    
+    mensagemDeErro = 0;    
     do {
 		if(mensagemDeErro >= 1){
-			printf("\nVocê deve digitar um número inteiro entre 1 e 3.\n\n--->");
+			printf("\nVocê deve digitar um número inteiro entre 1 e 3.\n\n--->  ");
 		}
 		fflush(stdin);
 		valorDoScanf = scanf ("%d", &opcao);
-		mensagemDeErro++;
-     
-    } while(valorDoScanf == 0);
-    
+		mensagemDeErro++;     
+    } while(valorDoScanf == 0);    
     validaopcao ();
 	switch (opcao){
 		case 1:
 			system ("cls");
 			cabecalho();
 			informa ();
-			//tabuleiro();
 		break;
 		case 2:
 			system ("cls");
@@ -217,7 +212,7 @@ validacoluna (){
 			}
             fflush(stdin);
 			valorDoScanf = scanf ("%d", &coluna);
-		mensagemDeErro++;
+			mensagemDeErro++;
 		} while(valorDoScanf == 0);		
 	}
 }
